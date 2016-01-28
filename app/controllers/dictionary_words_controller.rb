@@ -1,6 +1,14 @@
+require "#{Rails.root}/app/models/web_spellchecker.rb"
 class DictionaryWordsController < ApplicationController
   def spellcheck
-    input_word = params[:terms]
-    puts("we want to check the word" + input_word)
+    spellchecker = WebSpellchecker.new
+    input_word = params[:term]
+    results = spellchecker.correct(input_word)
+    hash_results = {
+      "term" => input_word,
+      "known" => true,
+      "suggestions" => results
+    }
+    render :json => "#{hash_results}"
   end
 end
